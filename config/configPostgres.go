@@ -9,11 +9,11 @@ import (
 
 //var connector *pg.DB
 
-func ConnectDataBase() (db *pg.DB) {
+func ConnectDataBasePostgres() (db *pg.DB) {
 	db = pg.Connect(&pg.Options{
 		Addr:                  ":5432",
 		User:                  "postgres",
-		Password:              "root",
+		Password:              "secret",
 		Database:              "postgres",
 	})
 
@@ -30,12 +30,19 @@ func ConnectDataBase() (db *pg.DB) {
 func createSchema(db *pg.DB) error {
 	models := []interface{}{
 		(*model.User)(nil),
+		(*model.Role)(nil),
+		(*model.UserRole)(nil),
+		(*model.Permission)(nil),
+		(*model.RolePermission)(nil),
+		(*model.Activity)(nil),
+		(*model.PermissionActivity)(nil),
 	}
 
 	for _, model := range models {
 		err := db.Model(model).CreateTable(&orm.CreateTableOptions{
 			Temp: false,        //Nếu đặt Temp: true sẽ biến thành in-memory database
 			IfNotExists: true,  //Nếu tồn tại bảng sẽ không tạo thêm
+			Varchar: 255,
 		})
 
 		if err != nil {

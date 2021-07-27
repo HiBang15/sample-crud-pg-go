@@ -1,4 +1,4 @@
-package sample_crud_pg_go
+package main
 
 import (
 	"github.com/HiBang15/sample-crud-pg-go.git/config"
@@ -8,8 +8,8 @@ import (
 )
 
 func main() {
-	db := config.ConnectDataBase()  //Kết nối database
-	defer db.Close()    //Đóng database trước kết thúc chương trình
+	db := config.ConnectDataBasePostgres() //Kết nối database
+	defer db.Close()                       //Đóng database trước kết thúc chương trình
 
 	controller.DB = db
 

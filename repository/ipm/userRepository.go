@@ -16,7 +16,7 @@ func NewUserRepository(db *pg.DB) repository.IUserRepository {
 }
 
 func (u *UserRepository) GetUserByEmail(email string) (user *model.User, err error) {
-	err = u.Connector.Model(&user).Where("email = ?", email).Select()
+	err = u.Connector.Model(user).Where("email = ?", email).Select()
 	if err != nil {
 		log.Println("[UserRepository][Error]Get user by email fail with err: " + err.Error())
 		return nil, err
@@ -27,7 +27,7 @@ func (u *UserRepository) GetUserByEmail(email string) (user *model.User, err err
 }
 
 func (u *UserRepository) GetListUser() (users []*model.User, err error) {
-	err = u.Connector.Model(&users).Select()
+	err = u.Connector.Model(users).Select()
 	if err != nil {
 		log.Println("[UserRepository][Error]Get list user fail with err: " + err.Error())
 		return nil, err
@@ -38,7 +38,7 @@ func (u *UserRepository) GetListUser() (users []*model.User, err error) {
 }
 
 func (u *UserRepository) GetUserById(userID int) (user *model.User, err error) {
-	err = u.Connector.Model(&user).Where("id = ?", userID).Select()
+	err = u.Connector.Model(user).Where("id = ?", userID).Select()
 	if err != nil {
 		log.Println("[UserRepository][Error]Get user by id fail with err: " + err.Error())
 		return nil, err
@@ -48,8 +48,8 @@ func (u *UserRepository) GetUserById(userID int) (user *model.User, err error) {
 	return user, nil
 }
 
-func (u *UserRepository) CreateUser(user *model.User) (err error) {
-	_, err = u.Connector.Model(&user).Insert()
+func (u *UserRepository) CreateUser(user *model.User) ( err error) {
+	_, err = u.Connector.Model(user).Insert()
 	if err != nil {
 		log.Println("[UserRepository][Error]Create user fail with err: " + err.Error())
 		return err
@@ -61,7 +61,7 @@ func (u *UserRepository) CreateUser(user *model.User) (err error) {
 
 func (u *UserRepository) UpdateUser(user *model.User) error {
 	//Update bảng user
-	_, err := u.Connector.Model(&user).TableExpr("auth.users").Where("id = ?", user.Id).Update()
+	_, err := u.Connector.Model(user).TableExpr("auth.users").Where("id = ?", user.Id).Update()
 
 	if err != nil {
 		log.Println("[UserRepository][Error]Update user fail with err: " + err.Error())
